@@ -7,6 +7,7 @@ from datetime import datetime, date
 from configparser import ConfigParser
 
 from imapclient import IMAPClient
+from imapclient.config import get_oauth2_token
 
 
 def copy_emails(from_server, to_server, last_state, target_label, state_config_filename):
@@ -44,7 +45,9 @@ def connect_imap_and_sync(from_host, to_host, last_state, state_config_filename,
     with IMAPClient(from_host['host'], port=int(from_host['port'])) as from_server,\
             IMAPClient(to_host['host'], port=int(to_host['port'])) as to_server:
         from_server.login(from_host['username'], from_host['password'])
-        to_server.login(to_host['username'], to_host['password'])
+        to_token = get_oauth2_token(to_host['host'], to_host['client_id'], to_host['client_secret'],
+                                    to_host['refresh_token'])
+        to_server.oauth2_login(to_host['username'], to_token)
         # from_server.capabilities()
         from_server.select_folder('INBOX', readonly=True)
         # to_server.capabilities()
@@ -100,7 +103,7 @@ def parse_args():
     return opts['auth_ini'], opts['state_ini']
 
 
-if __name__ == '__main__':
+def main():
     auth_conf_filename, state_conf_filename = parse_args()
     user_config, last_sync_state = parse_config(auth_conf_filename, state_conf_filename)
     while True:
@@ -112,3 +115,7 @@ if __name__ == '__main__':
         except Exception as e:  # In case of any network or connection issue...
             print('Unknown error:', e, file=sys.stderr)
             pass
+
+
+if __name__ == '__main__':
+    main()

@@ -12,15 +12,17 @@ A small tool to continuously sync one IMAP account to another (one-way sync)
 # Usage
 
 1. Install requirements in requirements.txt
-2. Fill in `auth.ini` with the login data and `last_sync.ini` with known infos or Nones
-3. Run the program and give the two config files as CLI arguments
+2. [Create OAuth client ID credentials at Google Cloud Console](https://developers.google.com/workspace/guides/create-credentials#desktop-app)
+3. Get the refresh token for your account by authorizing the app with [get_oauth2_token.py](get_oauth2_token.py)
+4. Fill in `auth.ini` with the login data and `last_sync.ini` with known infos or Nones
+5. Run the program and give the two config files as CLI arguments
    (it will save sync state in `last_sync.ini` after each successfully synced email)
-4. Get emails copied into Gmail
-5. Profit!
+6. Get emails copied into Gmail
+7. Profit!
 
 # Warning
 
-__It is not secure to store passwords in clean text format!__ One can implement OAuth2 on both sides.
+__It is not secure to store passwords or refresh tokens in clean text format!__ One can implement OAuth2 on both sides.
 This small demo is enough to fulfill my use case and easy to extend, do not expect it to be well-tested
 
 # License
