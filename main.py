@@ -153,7 +153,7 @@ def connect_imap_and_sync(user_config, auth_conf_filename, last_state, state_con
         print('Unknown error:', e, file=sys.stderr)
         exit(1)
     except HTTPError as e:
-        print('Known fatal error. Need to renew the token for Google!', e, file=sys.stderr)
+        print('Known fatal error. Need to renew the token for Google!', e, e.read(), file=sys.stderr)
         exit(1)
     except Exception:  # In case of any unhandled network or connection issue...
        print('Unknown error:', sys.exc_info()[:2], file=sys.stderr)
