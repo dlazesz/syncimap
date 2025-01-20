@@ -19,9 +19,14 @@ OAuth2 for sending mail with alias address yet.
 1. Install requirements in requirements.txt
 2. [Create OAuth client ID credentials at Google Cloud Console](https://developers.google.com/workspace/guides/create-credentials#desktop-app)
 3. [Create OAuth client ID credentials at Azure by registering an application](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
+    - Choose web as platform with http://localhost as redirect URI
+    - Check ID tokens and access tokens checkboxes
+    - Client ID: "Application (client) ID"
+    - Client Secret: "Certificates & secrets > Client secrets > New client secret > value"
+    - Scopes: API permissions > Microsoft Graph > Delegated > IMAP.AccessAsUser.All, Mail.Read, offline_access, openid, User.Read
 4. Fill in `auth.ini` with the login data and `last_sync.ini` with known infos or Nones
-5. Get the refresh token for your account by authorizing the app with [get_oauth2_token.py](get_oauth2_token.py)
-    - For the Outlook365 (besides the usual client id and client secret parameters):
+5. **Get the refresh token for your account** by authorizing the app with [get_oauth2_token.py](get_oauth2_token.py)
+    - For the Outlook365 (besides client id and client secret parameters, **YOUR TENANT ID** must be customised):
       - `-b https://login.microsoftonline.com/{YOUR TENANT ID}/oauth2/v2.0/authorize`
       - `-t https://login.microsoftonline.com/{YOUR TENANT ID}/oauth2/v2.0/token`
       - `--scope https://outlook.office.com/IMAP.AccessAsUser.All offline_access`

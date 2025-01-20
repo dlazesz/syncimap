@@ -51,8 +51,8 @@ def copy_emails(from_server, to_server, last_state, target_label, state_config_f
     else:
         last_uid_query = []
     message_nums = from_server.search(criteria=last_date_query + last_uid_query)
-    if len(message_nums) > 0 and isinstance(last_uid, int) and message_nums[0] == last_uid:
-        message_nums = message_nums[1:]  # Do not fetch last_uid twice!
+    if len(message_nums) > 0 and isinstance(last_uid, int) and message_nums[0] == last_uid > 1:
+        message_nums = message_nums[1:]  # Do not fetch last_uid twice! Except when last_uid is 1 (starting UID)
     print('Message UIDs to copy:',  message_nums, file=sys.stderr)
     for msg_num, msg_dict in from_server.fetch(message_nums, ['FLAGS', 'INTERNALDATE', 'BODY.PEEK[]']).items():
         copy_result = to_server.append('INBOX', msg_dict[b'BODY[]'], msg_dict[b'FLAGS'], msg_dict[b'INTERNALDATE'])
